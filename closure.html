@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>출력결과</title>
+  </head>
+  <body>
+    <script>
+      const increase = (() => {
+        let num = 0;
+        return () => {
+          return ++num;
+        };
+      })();
+
+      console.log(increase());
+      console.log(increase());
+      console.log(increase());
+    </script>
+  </body>
+</html>

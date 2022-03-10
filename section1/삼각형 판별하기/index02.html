@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>출력결과</title>
+  </head>
+  <body>
+    <script>
+      function solution(a, b, c) {
+        let answer, max;
+        let total = a + b + c;
+
+        max = Math.max(a, b, c);
+
+        if (total - max > max) answer = 'YES';
+        else answer = 'NO';
+
+        // max에는 가장 큰값이 담겨있음.
+
+        return answer;
+      }
+
+      console.log(solution(13, 33, 17));
+    </script>
+  </body>
+</html>
