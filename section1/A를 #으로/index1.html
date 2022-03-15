@@ -6,11 +6,15 @@
   <body>
     <script>
       function solution(str) {
-        let answer = str;
+        let answer = '';
 
-        answer = answer.replace(/A/g, '#');
-
-        console.log(str);
+        for (let elem of str) {
+          if (elem === 'A') {
+            answer += '#';
+          } else {
+            answer += elem;
+          }
+        }
 
         return answer;
       }
