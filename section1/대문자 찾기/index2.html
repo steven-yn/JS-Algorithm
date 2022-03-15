@@ -6,19 +6,18 @@
   <body>
     <script>
       function solution(str) {
-        let answer = '';
+        let answer = 0;
 
         for (let elem of str) {
-          if (elem === elem.toUpperCase()) {
-            answer += elem.toLowerCase();
-          } else {
-            answer += elem.toUpperCase();
-          }
+          let asc = elem.charCodeAt();
+          if (asc >= 65 && asc <= 90) answer++;
         }
+
         return answer;
       }
 
-      let str = 'StuDY';
+      let str = 'KoreaTimeGood';
+
       console.log(solution(str));
     </script>
   </body>
