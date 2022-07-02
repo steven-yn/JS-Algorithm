@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>출력결과</title>
+  </head>
+  <body>
+    <script>
+      function solution(num) {
+        if (num <= 1) return num;
+
+        return num * solution(num - 1);
+      }
+
+      let num = 5;
+      console.log(solution(num));
+    </script>
+  </body>
+</html>
