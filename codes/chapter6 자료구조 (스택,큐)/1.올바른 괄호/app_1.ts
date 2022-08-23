@@ -5,27 +5,21 @@ const app = express();
 function solution(str: string) {
   let answer: any = "";
   let stack: string[] = [];
-  let idx: number = 0;
 
   for (let elem of str) {
-    stack.push(elem);
-
-    if (elem === ")" && stack.length >= 1) {
-      while (stack[stack.length - 1] !== "(") {
-        stack.pop();
-      }
-      stack.pop();
+    if (elem === "(") {
+      stack.push("(");
     }
 
-    idx++;
+    if (elem === ")" && stack.length >= 1) {
+      stack.pop();
+    }
   }
 
-  answer = stack.join("");
-
-  return answer;
+  return (answer = stack);
 }
 
-const strInput: string = "(A(BC)D)EF(G(H)(IJ)K)LM(N)";
+const strInput: string = "(()(()))(()";
 
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
   res.send(solution(strInput));

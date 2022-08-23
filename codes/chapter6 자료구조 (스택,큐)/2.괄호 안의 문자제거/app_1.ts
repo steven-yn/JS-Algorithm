@@ -5,7 +5,6 @@ const app = express();
 function solution(str: string) {
   let answer: any = "";
   let stack: string[] = [];
-  let idx: number = 0;
 
   for (let elem of str) {
     stack.push(elem);
@@ -16,8 +15,6 @@ function solution(str: string) {
       }
       stack.pop();
     }
-
-    idx++;
   }
 
   answer = stack.join("");
