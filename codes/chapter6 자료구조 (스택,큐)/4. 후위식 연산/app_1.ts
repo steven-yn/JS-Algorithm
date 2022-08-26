@@ -34,8 +34,8 @@ function solution(sick: string) {
             case "*":
               mid = leftNum * rightNum;
               break;
-            case "/":
-              mid = leftNum / rightNum;
+            case "%":
+              mid = leftNum % rightNum;
               break;
             default:
               break;
@@ -61,8 +61,8 @@ function solution(sick: string) {
             case "*":
               mid = leftNum * rightNum;
               break;
-            case "/":
-              mid = leftNum / rightNum;
+            case "%":
+              mid = leftNum % rightNum;
               break;
             default:
               break;
