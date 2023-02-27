@@ -1,6 +1,7 @@
-import express, { Request, Response, NextFunction } from "express";
+const fs = require("fs");
 
-const app = express();
+const filePath = process.platform === "linux" ? "/dev/stdin" : "/input.txt";
+let input = fs.readFileSync(__dirname + filePath).toString();
 
 function solution(sample: string) {
   const sampleList = sample.split("\n");
@@ -47,20 +48,4 @@ function solution(sample: string) {
   return result;
 }
 
-const sample = `6
-(())())
-(((()())()
-(()())((()))
-((()()(()))(((())))()
-()()()()(()()())()
-(()((())()(`;
-
-app.get("/", (req: Request, res: Response, next: NextFunction) => {
-  res.send(solution(sample));
-});
-
-// app.once("connection", );
-
-app.listen("4001", () => {
-  console.log(solution(sample));
-});
+console.log(solution(input));

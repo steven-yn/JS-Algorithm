@@ -4,7 +4,7 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "start": "node -r esm src/index.ts",
+    "start": "ts-node -r esm src/index.ts",
     "build": "tsc -p .",
     "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" -r esm src/index.ts"
   },
