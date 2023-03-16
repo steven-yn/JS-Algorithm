@@ -1,66 +1,49 @@
-import express, { Request, Response, NextFunction } from "express";
+// 아나그램이란 알파벳의 개수가 순서에 상관없이 모두 동일하게 같을때 아나그램이라고 한다.
+// 두 문자열이 서로 아나그램이라면 true, 아니면 false 를 반환 하는 함수 validAnagram 을 작성하라.
 
-const app = express();
+// validAnagram('', '') // true
+// validAnagram('anagram', 'nagaram') // true
+// validAnagram('rat', 'car') // false
+// validAnagram('aaz', 'zza') // false
 
-function solution(sample: string) {
-  const sampleList = sample.split("\n");
-  let listIdx = 0;
-  let stack: string[] = [];
-  let result = "";
+// 문자들이 나타나는 정확한 횟수와 빈도가 정확한지 확인 해야함
 
-  if (typeof Number(sampleList[0]) === "number") {
-    listIdx = Number(sampleList[0]);
+const validAnagram = (str1: string, str2: string) => {
+  if (str1 === "" && str1 === str2) return true;
+
+  let freq1 = {};
+  let freq2 = {};
+
+  for (let val1 of str1) {
+    if (freq1[val1]) {
+      freq1[val1] += 1;
+    } else {
+      freq1[val1] = 1;
+    }
   }
 
-  sampleList.forEach((temp, idx) => {
-    if (idx <= 0) return;
-
-    if (temp.length < 2 || temp.length > 50) return;
-
-    for (const vps of temp) {
-      if (stack.length > 0 && stack[stack.length - 1] === "(" && vps === ")") {
-        stack.pop();
-      } else {
-        stack.push(vps);
-      }
-    }
-
-    if (stack.length > 0) {
-      if (idx === listIdx) {
-        result += "NO";
-        stack = [];
-      } else {
-        result += "NO\n";
-        stack = [];
-      }
+  for (let val2 of str2) {
+    if (freq2[val2]) {
+      freq2[val2] += 1;
     } else {
-      if (idx === listIdx) {
-        result += "YES";
-        stack = [];
-      } else {
-        result += "YES\n";
-        stack = [];
-      }
+      freq2[val2] = 1;
     }
-  });
+  }
 
-  return result;
-}
+  console.log(freq1);
+  console.log(freq2);
 
-const sample = `6
-(())())
-(((()())()
-(()())((()))
-((()()(()))(((())))()
-()()()()(()()())()
-(()((())()(`;
+  for (let key in freq1) {
+    if (!(key in freq2)) {
+      return false;
+    }
 
-app.get("/", (req: Request, res: Response, next: NextFunction) => {
-  res.send(solution(sample));
-});
+    if (freq1[key] !== freq2[key]) {
+      return false;
+    }
+  }
 
-// app.once("connection", );
+  return true;
+};
 
-app.listen("4001", () => {
-  console.log(solution(sample));
-});
+console.log(validAnagram("rat", "car"));
