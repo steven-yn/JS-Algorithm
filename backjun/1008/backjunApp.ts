@@ -3,13 +3,12 @@ const filePath = process.platform === "linux" ? "/dev/stdin" : "/input.txt";
 let inputFile: string = fs.readFileSync(__dirname + filePath).toString();
 
 const solution = (inputString: string) => {
-  const inputList = inputString.split("\n");
+  const inputList = inputString.split(" ");
+  const A = Number(inputList[0]);
+  const B = Number(inputList[1]);
 
-  if (
-    inputList[0] &&
-    (inputList[0].length < 50 || !inputList[0].match(/[A-Z]/))
-  ) {
-    return `${inputList[0]}??!`;
+  if (A > 0 && B < 10) {
+    return A / B;
   }
 };
 
