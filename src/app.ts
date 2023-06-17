@@ -1,16 +1,13 @@
-function maxSubarraySum(arr: number[], num: number) {
-  let maxSum = 0;
-  let tempSum = 0;
-  if (arr.length < num) return null;
-  for (let i = 0; i < num; i++) {
-    maxSum += arr[i];
+function linearSearch(list: number[], target: number) {
+  for (let i = 0; i < list.length - 1; i++) {
+    if (list[i] === target) return i;
   }
-  tempSum = maxSum;
-  for (let i = num; i < arr.length; i++) {
-    tempSum = tempSum - arr[i - num] + arr[i];
-    maxSum = Math.max(maxSum, tempSum);
-  }
-  return maxSum;
+  return -1;
 }
 
-console.log(maxSubarraySum([2, 6, 9, 2, 1, 8, 5, 6, 3], 3));
+linearSearch([10, 15, 20, 25, 30], 15); // 1
+linearSearch([9, 8, 7, 6, 5, 4, 3, 2, 1, 0], 4); // 5
+linearSearch([100], 100); // 0
+linearSearch([1, 2, 3, 4, 5], 6); // -1
+linearSearch([9, 8, 7, 6, 5, 4, 3, 2, 1, 0], 10); // -1
+linearSearch([100], 200); // -1
