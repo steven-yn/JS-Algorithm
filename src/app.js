@@ -1,22 +1,57 @@
-function linearSearch(list, target) {
-    let idx = list.length - 1;
-    const getIndex = (rec_list, target) => {
-        if (rec_list.length <= 0)
-            return false;
-        if (rec_list[rec_list.length - 1] === target) {
-            return true;
-        }
-        rec_list.pop();
-        idx -= 1;
-        return getIndex(rec_list, target);
-    };
-    const bool = getIndex(list, target);
-    const result = bool === true ? idx : -1;
-    return result;
+function binarySearch(list, target) {
+  // add whatever parameters you deem necessary - good luck!
+  let leftPointer = 0;
+  let rightPointer = list.length - 1;
+  let middlePointer = Math.floor((rightPointer + leftPointer) / 2);
+  while (
+    leftPointer <= rightPointer &&
+    leftPointer !== middlePointer &&
+    rightPointer !== middlePointer
+  ) {
+    if (list[middlePointer] === target) {
+      return middlePointer;
+    } else if (list[leftPointer] === target) {
+      return leftPointer;
+    } else if (list[rightPointer] === target) {
+      return rightPointer;
+    }
+    if (list[middlePointer] > target) {
+      rightPointer = middlePointer;
+    } else if (list[middlePointer] < target) {
+      leftPointer = middlePointer;
+    }
+    middlePointer = Math.floor((rightPointer + leftPointer) / 2);
+  }
+  return -1;
 }
-linearSearch([10, 15, 20, 25, 30], 15); // 1
-linearSearch([9, 8, 7, 6, 5, 4, 3, 2, 1, 0], 4); // 5
-linearSearch([100], 100); // 0
-linearSearch([1, 2, 3, 4, 5], 6); // -1
-linearSearch([9, 8, 7, 6, 5, 4, 3, 2, 1, 0], 10); // -1
-linearSearch([100], 200); // -1
+console.log(binarySearch([1, 2, 3, 4, 5], 2)); // 1
+console.log(binarySearch([1, 2, 3, 4, 5], 3)); // 2
+console.log(binarySearch([1, 2, 3, 4, 5], 5)); // 4
+console.log(binarySearch([1, 2, 3, 4, 5], 6)); // -1
+console.log(
+  binarySearch(
+    [
+      5, 6, 10, 13, 14, 18, 30, 34, 35, 37, 40, 44, 64, 79, 84, 86, 95, 96, 98,
+      99,
+    ],
+    10
+  )
+); // 2
+console.log(
+  binarySearch(
+    [
+      5, 6, 10, 13, 14, 18, 30, 34, 35, 37, 40, 44, 64, 79, 84, 86, 95, 96, 98,
+      99,
+    ],
+    95
+  )
+); // 16
+console.log(
+  binarySearch(
+    [
+      5, 6, 10, 13, 14, 18, 30, 34, 35, 37, 40, 44, 64, 79, 84, 86, 95, 96, 98,
+      99,
+    ],
+    100
+  )
+); // -1
