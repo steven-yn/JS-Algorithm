@@ -1,206 +1,92 @@
-interface BillInfo {
-  billing: number;
-  tai: 'default' | 'shrimp' | null;
-  cafeTime: 'default' | 'run' | null;
-  cafeCoffee: 'default' | 'mint' | 'cola' | 'shotPlus' | null;
-  pizza: 'default' | 'run' | null;
+class TreeNode {
+  value: any;
+  left: TreeNode | null;
+  right: TreeNode | null;
+
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
 }
 
-interface Petbook {
-  성연: BillInfo;
-  승연: BillInfo;
-  가영: BillInfo;
-  선아: BillInfo;
-  명규: BillInfo;
-  경덕: BillInfo;
-  효진: BillInfo;
-  은혜: BillInfo;
-  솔: BillInfo;
-}
-
-interface Ssafy {
-  준형님: BillInfo;
-  종혁님: BillInfo;
-  대구님: BillInfo;
-}
-
-interface Goorm {
-  상혁: BillInfo;
-  민규: BillInfo;
-}
-
-interface People extends Petbook, Ssafy, Goorm {}
-
-const peopleInfo: People = {
-  성연: {
-    billing: 0,
-    tai: 'shrimp',
-    cafeTime: 'default',
-    cafeCoffee: 'default',
-    pizza: 'default',
-  },
-  승연: {
-    billing: 0,
-    tai: 'default',
-    cafeTime: 'run',
-    cafeCoffee: 'default',
-    pizza: null,
-  },
-  가영: {
-    billing: 0,
-    tai: 'default',
-    cafeTime: 'default',
-    cafeCoffee: 'default',
-    pizza: 'run',
-  },
-  선아: {
-    billing: 0,
-    tai: 'default',
-    cafeTime: 'default',
-    cafeCoffee: 'default',
-    pizza: 'default',
-  },
-  명규: {
-    billing: 0,
-    tai: 'default',
-    cafeTime: 'default',
-    cafeCoffee: 'default',
-    pizza: 'default',
-  },
-  경덕: {
-    billing: 0,
-    tai: 'default',
-    cafeTime: 'default',
-    cafeCoffee: 'mint',
-    pizza: 'default',
-  },
-  효진: {
-    billing: 0,
-    tai: 'default',
-    cafeTime: 'default',
-    cafeCoffee: 'cola',
-    pizza: 'default',
-  },
-  은혜: {
-    billing: 0,
-    tai: 'default',
-    cafeTime: null,
-    cafeCoffee: null,
-    pizza: null,
-  },
-  솔: {
-    billing: 0,
-    tai: 'shrimp',
-    cafeTime: 'default',
-    cafeCoffee: 'cola',
-    pizza: null,
-  },
-  준형님: {
-    billing: 0,
-    tai: null,
-    cafeTime: 'default',
-    cafeCoffee: 'default',
-    pizza: 'default',
-  },
-  종혁님: {
-    billing: 0,
-    tai: null,
-    cafeTime: 'default',
-    cafeCoffee: 'default',
-    pizza: 'default',
-  },
-  대구님: {
-    billing: 0,
-    tai: null,
-    cafeTime: 'default',
-    cafeCoffee: 'default',
-    pizza: null,
-  },
-  상혁: {
-    billing: 0,
-    tai: null,
-    cafeTime: 'default',
-    cafeCoffee: 'shotPlus',
-    pizza: 'default',
-  },
-  민규: {
-    billing: 0,
-    tai: null,
-    cafeTime: 'default',
-    cafeCoffee: 'default',
-    pizza: 'default',
-  },
-};
-
-// 인덱스는, bill 의 인덱스를 가리킨다
-// tai 가 새우면 1번째 인덱스, 아니면 0
-// cafeTime 이 run 이면 1번째 인덱스, 아니면 0
-// cafeCoffee 가 mint 면 1번째 인덱스, cola 면 2번째 인덱스, shotPlus 면 3번째 인덱스, 아니면 0
-// null 은 덧셈에서 제외
-// bill 에 들어있는 값을 받아서, 각 사람의 billing 에 더해준다
-
-const calc = (
-  people: People,
-  taiBill: number[],
-  cafeCoffeeBill: number[],
-  cafeTimeBill: number[],
-  pizzaBill: number[]
-) => {
-  const peopleList = Object.keys(people);
-  const peopleCount = peopleList.length;
-
-  for (let i = 0; i < peopleCount; i++) {
-    const person = people[peopleList[i]];
-    const { tai, cafeCoffee, cafeTime } = person;
-    const taiIndex = tai === 'shrimp' ? 1 : 0;
-    const cafeTimeIndex = cafeTime === 'run' ? 1 : 0;
-    const cafeCoffeeIndex =
-      cafeCoffee === 'mint'
-        ? 1
-        : cafeCoffee === 'cola'
-        ? 2
-        : cafeCoffee === 'shotPlus'
-        ? 3
-        : 0;
-    const pizzaIndex = person.pizza === 'run' ? 1 : 0;
-
-    const taiBilling = tai !== null ? taiBill[taiIndex] : 0;
-
-    const cafeBilling = cafeTime !== null ? cafeTimeBill[cafeTimeIndex] : 0;
-
-    const cafeCoffeeBilling =
-      cafeCoffee !== null ? cafeCoffeeBill[cafeCoffeeIndex] : 0;
-
-    const pizzaBilling = person.pizza !== null ? pizzaBill[pizzaIndex] : 0;
-
-    person.billing =
-      taiBilling + cafeBilling + cafeCoffeeBilling + pizzaBilling;
+class BinarySearchTree {
+  root: TreeNode | null;
+  constructor() {
+    this.root = null;
   }
 
-  return people;
-};
+  insert(value: any) {
+    if (!this.root) {
+      this.root = new TreeNode(value);
+      return this;
+    }
 
-const taiBill = [11000, 12000];
-const cafeCoffeeBill = [4500, 3500, 3700, 5000];
-const cafeTimeBill = [7000, 3000];
-const pizzaBill = [22865, 11610];
+    return this.set(this.root, value);
+  }
 
-console.log(calc(peopleInfo, taiBill, cafeCoffeeBill, cafeTimeBill, pizzaBill));
+  find(value: any) {
+    if (!this.root) return null;
 
-console.log('1');
+    return this.get(this.root, value);
+  }
 
-const func = () => {
-  console.log('2');
-  return '3';
-};
+  state(node: TreeNode | null, value: any) {
+    if (value === node.value) return "EQUAL";
+    if (value > node.value) return "RIGHT";
+    if (value < node.value) return "LEFT";
+    return null;
+  }
 
-(async () => {
-  console.log('4');
-  setTimeout(() => {
-    console.log('5');
-  }, 0);
-  const res = await func();
-  console.log(res);
-})();
+  get(node: TreeNode | null, value: any) {
+    if (!node) return null;
 
-console.log('6');
+    switch (this.state(node, value)) {
+      case "EQUAL":
+        return node;
+      case "RIGHT":
+        return this.get(node.right, value);
+      case "LEFT":
+        return this.get(node.left, value);
+      default:
+        return null;
+    }
+  }
+
+  set(node: TreeNode | null, value: any) {
+    switch (this.state(node, value)) {
+      case "EQUAL":
+        return null;
+      case "RIGHT": {
+        if (!node.right) {
+          node.right = new TreeNode(value);
+          return this;
+        }
+
+        return this.set(node.right, value);
+      }
+      case "LEFT": {
+        if (!node.left) {
+          node.left = new TreeNode(value);
+          return this;
+        }
+
+        return this.set(node.left, value);
+      }
+      default:
+        return null;
+    }
+  }
+}
+
+const tree = new BinarySearchTree();
+
+tree.insert(10);
+tree.insert(20);
+tree.insert(5);
+tree.insert(7);
+tree.insert(30);
+tree.insert(3);
+tree.insert(4);
+tree.insert(15);
+tree.insert(22);
