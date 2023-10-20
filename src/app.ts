@@ -77,6 +77,72 @@ class BinarySearchTree {
         return null;
     }
   }
+
+  // 전위 탐색
+  DFS_PreOrder() {
+    let visited = [];
+    let current = this.root;
+
+    function traverse(node: TreeNode | null, visited: number[]) {
+      visited.push(node.value);
+
+      if (node.left) {
+        traverse(node.left, visited);
+      }
+
+      if (node.right) {
+        traverse(node.right, visited);
+      }
+    }
+
+    traverse(current, visited);
+
+    return visited;
+  }
+
+  // 후위 탐색
+  DFS_PostOrder() {
+    let visited = [];
+    let current = this.root;
+
+    function traverse(node: TreeNode | null, visited: number[]) {
+      if (node.left) {
+        traverse(node.left, visited);
+      }
+
+      if (node.right) {
+        traverse(node.right, visited);
+      }
+
+      visited.push(node.value);
+    }
+
+    traverse(current, visited);
+
+    return visited;
+  }
+
+  // 정위 탐색
+  DFS_InOrder() {
+    let visited = [];
+    let current = this.root;
+
+    function traverse(node: TreeNode | null, visited: number[]) {
+      if (node.left) {
+        traverse(node.left, visited);
+      }
+
+      visited.push(node.value);
+
+      if (node.right) {
+        traverse(node.right, visited);
+      }
+    }
+
+    traverse(current, visited);
+
+    return visited;
+  }
 }
 
 function breadthFirstSearch(node: TreeNode) {
@@ -85,7 +151,7 @@ function breadthFirstSearch(node: TreeNode) {
 
   while (queue.length !== 0) {
     const dequeueNode = queue.shift();
-    visited.push(dequeueNode);
+    visited.push(dequeueNode.value);
 
     if (dequeueNode.left) {
       queue.push(dequeueNode.left);
@@ -102,12 +168,9 @@ function breadthFirstSearch(node: TreeNode) {
 const tree = new BinarySearchTree();
 
 tree.insert(10);
-tree.insert(20);
-tree.insert(5);
-tree.insert(7);
-tree.insert(30);
+tree.insert(6);
 tree.insert(3);
-tree.insert(4);
+tree.insert(8);
 tree.insert(15);
-tree.insert(22);
-console.log(breadthFirstSearch(tree.root));
+tree.insert(20);
+console.log(tree.DFS_InOrder());
