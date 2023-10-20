@@ -1,176 +1,109 @@
-class TreeNode {
-  value: any;
-  left: TreeNode | null;
-  right: TreeNode | null;
-
-  constructor(value) {
-    this.value = value;
-    this.left = null;
-    this.right = null;
-  }
-}
-
-class BinarySearchTree {
-  root: TreeNode | null;
+class MaxBinaryHeap {
+  values: number[];
   constructor() {
-    this.root = null;
+    this.values = [];
   }
 
-  insert(value: any) {
-    if (!this.root) {
-      this.root = new TreeNode(value);
-      return this;
+  getChildIndex(index: number, direction: "LEFT" | "RIGHT") {
+    if (direction === "LEFT") return 2 * index + 1;
+    return 2 * index + 2;
+  }
+
+  getParentIndex(index: number) {
+    return Math.floor((index - 1) / 2);
+  }
+
+  insert(value: number) {
+    this.values.push(value);
+    this.bubbleUp(this.values.length - 1);
+
+    return this;
+  }
+
+  bubbleUp(newIndex: number) {
+    if (newIndex === 0) return;
+
+    let parentIndex = this.getParentIndex(newIndex);
+
+    const newValue = this.values[newIndex];
+    const parentValue = this.values[parentIndex];
+
+    if (newValue > parentValue) {
+      this.values[parentIndex] = newValue;
+      this.values[newIndex] = parentValue;
+      this.bubbleUp(parentIndex);
     }
 
-    return this.set(this.root, value);
+    return;
   }
 
-  find(value: any) {
-    if (!this.root) return null;
+  remove() {
+    const originRoot = this.values[0];
+    const lastValue = this.values[this.values.length - 1];
+    this.values[0] = lastValue;
+    this.values.pop();
 
-    return this.get(this.root, value);
+    this.bubbleDown(0);
+
+    return originRoot;
   }
 
-  state(node: TreeNode | null, value: any) {
-    if (value === node.value) return "EQUAL";
-    if (value > node.value) return "RIGHT";
-    if (value < node.value) return "LEFT";
-    return null;
-  }
+  bubbleDown(newIndex: number) {
+    const targetValue = this.values[newIndex];
+    const leftChildIndex = this.getChildIndex(newIndex, "LEFT");
+    const rightChildIndex = this.getChildIndex(newIndex, "RIGHT");
 
-  get(node: TreeNode | null, value: any) {
-    if (!node) return null;
+    if (leftChildIndex === 0 || rightChildIndex === 0) return;
 
-    switch (this.state(node, value)) {
-      case "EQUAL":
-        return node;
-      case "RIGHT":
-        return this.get(node.right, value);
-      case "LEFT":
-        return this.get(node.left, value);
-      default:
-        return null;
-    }
-  }
+    const leftChild = this.values[leftChildIndex];
+    const rightChild = this.values[rightChildIndex];
 
-  set(node: TreeNode | null, value: any) {
-    switch (this.state(node, value)) {
-      case "EQUAL":
-        return null;
-      case "RIGHT": {
-        if (!node.right) {
-          node.right = new TreeNode(value);
-          return this;
-        }
+    if (
+      this.values[newIndex] < leftChild &&
+      this.values[newIndex] < rightChild
+    ) {
+      if (leftChild > rightChild) {
+        this.values[newIndex] = leftChild;
+        this.values[leftChildIndex] = targetValue;
 
-        return this.set(node.right, value);
+        this.bubbleDown(leftChildIndex);
+      } else if (rightChild > leftChild) {
+        this.values[newIndex] = rightChild;
+        this.values[rightChildIndex] = targetValue;
+
+        this.bubbleDown(rightChildIndex);
       }
-      case "LEFT": {
-        if (!node.left) {
-          node.left = new TreeNode(value);
-          return this;
-        }
+    } else if (this.values[newIndex] < leftChild) {
+      this.values[newIndex] = leftChild;
+      this.values[leftChildIndex] = targetValue;
 
-        return this.set(node.left, value);
-      }
-      default:
-        return null;
-    }
-  }
+      this.bubbleDown(leftChildIndex);
+    } else if (this.values[newIndex] < rightChild) {
+      this.values[newIndex] = rightChild;
+      this.values[rightChildIndex] = targetValue;
 
-  // 전위 탐색
-  DFS_PreOrder() {
-    let visited = [];
-    let current = this.root;
-
-    function traverse(node: TreeNode | null, visited: number[]) {
-      visited.push(node.value);
-
-      if (node.left) {
-        traverse(node.left, visited);
-      }
-
-      if (node.right) {
-        traverse(node.right, visited);
-      }
+      this.bubbleDown(rightChildIndex);
     }
 
-    traverse(current, visited);
-
-    return visited;
-  }
-
-  // 후위 탐색
-  DFS_PostOrder() {
-    let visited = [];
-    let current = this.root;
-
-    function traverse(node: TreeNode | null, visited: number[]) {
-      if (node.left) {
-        traverse(node.left, visited);
-      }
-
-      if (node.right) {
-        traverse(node.right, visited);
-      }
-
-      visited.push(node.value);
-    }
-
-    traverse(current, visited);
-
-    return visited;
-  }
-
-  // 정위 탐색
-  DFS_InOrder() {
-    let visited = [];
-    let current = this.root;
-
-    function traverse(node: TreeNode | null, visited: number[]) {
-      if (node.left) {
-        traverse(node.left, visited);
-      }
-
-      visited.push(node.value);
-
-      if (node.right) {
-        traverse(node.right, visited);
-      }
-    }
-
-    traverse(current, visited);
-
-    return visited;
+    return targetValue;
   }
 }
 
-function breadthFirstSearch(node: TreeNode) {
-  let queue = [node];
-  let visited = [];
-
-  while (queue.length !== 0) {
-    const dequeueNode = queue.shift();
-    visited.push(dequeueNode.value);
-
-    if (dequeueNode.left) {
-      queue.push(dequeueNode.left);
-    }
-
-    if (dequeueNode.right) {
-      queue.push(dequeueNode.right);
-    }
-  }
-
-  return visited;
-}
-
-const tree = new BinarySearchTree();
-
-tree.insert(10);
-tree.insert(6);
-tree.insert(3);
-tree.insert(8);
-tree.insert(15);
-tree.insert(20);
-console.log(tree.DFS_InOrder());
+const heap = new MaxBinaryHeap();
+heap.insert(41);
+heap.insert(39);
+heap.insert(33);
+heap.insert(18);
+heap.insert(27);
+heap.insert(12);
+heap.insert(55);
+console.log(heap);
+console.log(heap.remove(), "extract");
+console.log(heap.remove(), "extract");
+console.log(heap.remove(), "extract");
+console.log(heap.remove(), "extract");
+console.log(heap.remove(), "extract");
+console.log(heap.remove(), "extract");
+console.log(heap.remove(), "extract");
+console.log(heap.remove(), "extract");
+console.log(heap);
